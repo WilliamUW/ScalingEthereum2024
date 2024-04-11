@@ -36,11 +36,11 @@ const Home: NextPage = () => {
     const currentTime = new Date().toISOString();
     const text = `Borrower: ${address}
     
-    NFT Collateral: ${nft.title} - ${nft.description}
+NFT Collateral: ${JSON.stringify(nft, null, 2)}
 
-    Time: ${currentTime}
+Time: ${currentTime}
     
-    Loan Amount: 100 USDC
+Loan Amount: 100 USDC
     `;
     const apiKey = "13d44665.a912997a74e3434f8ce7a7ca7a2135f7";
     const name = `${currentTime} - Loan for ${address} with the NFT ${nft.title} as collateral.`; //Optional
@@ -123,6 +123,11 @@ const Home: NextPage = () => {
                 <p className="my-2 font-medium">Connected Address:</p>
                 <Address address={connectedAddress} />
               </div>
+            </div>
+          )}
+          {step === 0 && connectedAddress && (
+            <div>
+              <br />
               <Button
                 onClick={() => {
                   const url = `${baseURL}/getNFTs/?owner=${connectedAddress}`;
@@ -142,9 +147,13 @@ const Home: NextPage = () => {
             </div>
           )}
           <br />
-          {nfts && nfts.length > 0 && step === 1 && <strong>Your NFTs:</strong>}
-          <br />
-          <br />
+          {nfts && nfts.length > 0 && step === 1 && (
+            <div>
+              <strong>Your NFTs:</strong>
+              <br />
+              <br />
+            </div>
+          )}
           <div style={{ display: "flex", flexWrap: "wrap", gap: "16px", justifyContent: "center" }}>
             {nfts &&
               nfts.length > 0 &&
@@ -185,6 +194,8 @@ const Home: NextPage = () => {
                           setStep(2);
                           setSelectedNft(nft);
                         }}
+                        style={{ marginLeft: "10px" }}
+                        type="primary"
                       >
                         Request Loan
                       </Button>
@@ -197,8 +208,11 @@ const Home: NextPage = () => {
             {step === 2 &&
               [selectedNft].map((nft: any, index) => (
                 <>
-                  <p>You can receive a loan of 100 USDC with the following NFT as collateral.</p>
-                  <Card sx={{ width: 250, borderRadius: "1em" }}>
+                  <strong>Loan Details:</strong>
+                  <p>
+                    You can receive a loan of <strong>100 USDC</strong> with the following NFT as collateral.
+                  </p>
+                  <Card sx={{ width: 250, borderRadius: "1em", alignSelf: "center" }}>
                     <CardMedia
                       sx={{
                         height: 250,
@@ -216,32 +230,36 @@ const Home: NextPage = () => {
                       <Typography variant="body2" color="text.secondary">
                         {nft.description.slice(0, 50)}
                       </Typography>
-                      <br />
                     </CardContent>
-
                     <strong>Do you want to proceed?</strong>
-                    <Button
-                      onClick={() => {
-                        setStep(3);
-                        setLoanRequested(true);
-                      }}
-                    >
-                      Yes
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        setStep(1);
-                        setSelectedNft(null);
-                      }}
-                    >
-                      No
-                    </Button>
+                    <div style={{ margin: "10px" }}>
+                      <Button
+                        onClick={() => {
+                          setStep(1);
+                          setSelectedNft(null);
+                        }}
+                      >
+                        No
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          setStep(3);
+                          setLoanRequested(true);
+                        }}
+                        type="primary"
+                        style={{ marginLeft: "10px" }}
+                      >
+                        Yes
+                      </Button>
+                    </div>
                   </Card>
                 </>
               ))}
           </div>
           {step === 3 && (
             <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+              <strong>Contract Finalization:</strong>
+              <br />
               Please sign the following ETHSign contract to complete the loan request.
               <div>
                 <p>Contract Details ...</p>
@@ -250,24 +268,28 @@ const Home: NextPage = () => {
                 nftCard(selectedNft)
                 <p>Sign ...</p>
               </div>
-              <Button
-                onClick={() => {
-                  setStep(4);
-                  storeWeb3FilesTest(connectedAddress || "", selectedNft);
-                }}
-              >
-                Contract Signed
-              </Button>
-              <Button
-                onClick={() => {
-                  setStep(2);
-                }}
-              >
-                Back
-              </Button>
+              <div>
+                <Button
+                  onClick={() => {
+                    setStep(2);
+                  }}
+                >
+                  Back
+                </Button>
+                <Button
+                  onClick={() => {
+                    setStep(4);
+                    storeWeb3FilesTest(connectedAddress || "", selectedNft);
+                  }}
+                  style={{ marginLeft: "10px" }}
+                  type="primary"
+                >
+                  Contract Signed
+                </Button>
+              </div>
             </div>
           )}
-          {step === 4 && ipfsLink == "" && <div>Loading...</div>}
+          {step === 4 && ipfsLink == "" && <div>Finalizing your contract, please wait...</div>}
           {step === 4 && ipfsLink && (
             <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
               <strong>Congrulations! The loan request process is complete.</strong>
@@ -285,13 +307,15 @@ const Home: NextPage = () => {
                 <strong>NFT Collateral</strong> nftCard(selectedNft)
                 <p>Sign ...</p>
               </div>
-              <Button
-                onClick={() => {
-                  setStep(1);
-                }}
-              >
-                Done
-              </Button>
+              <div>
+                <Button
+                  onClick={() => {
+                    setStep(1);
+                  }}
+                >
+                  Done!
+                </Button>
+              </div>
             </div>
           )}
         </div>
