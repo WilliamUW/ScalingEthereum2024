@@ -9,7 +9,7 @@ const deployInvoiceEscrow: DeployFunction = async function (hre: HardhatRuntimeE
   // Deploy InvoiceEscrow contract with constructor arguments
   await deploy("InvoiceEscrow", {
     from: deployer,
-    args: [deployer, "0x1234567890123456789012345678901234567890", "0x0987654321098765432109876543210987654321"], 
+    args: [deployer, "0x1234567890123456789012345678901234567890", "0x0987654321098765432109876543210987654321"],
     log: true,
     autoMine: true,
   });
