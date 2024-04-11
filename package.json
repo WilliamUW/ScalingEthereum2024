@@ -42,9 +42,13 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@lighthouse-web3/sdk": "^0.3.0",
     "@mui/material": "^5.15.15",
+    "@web3-storage/w3cli": "^7.6.0",
+    "@web3-storage/w3up-client": "^12.5.1",
     "alchemy-sdk": "^3.2.1",
     "antd": "^5.16.1",
-    "mui": "^0.0.1"
+    "mui": "^0.0.1",
+    "web3.storage": "^4.5.5"
   }
 }

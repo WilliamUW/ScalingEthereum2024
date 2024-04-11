@@ -9,6 +9,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import type { NextPage } from "next";
 import Typography from "@mui/material/Typography";
+import lighthouse from "@lighthouse-web3/sdk";
 import { useAccount } from "wagmi";
 import { useState } from "react";
 
@@ -27,8 +28,21 @@ const Home: NextPage = () => {
   const [loanRequested, setLoanRequested] = useState(false);
   const [contractSigned, setContractSigned] = useState(false);
   const [step, setStep] = useState(0);
+  const [ipfsLink, setIpfsLink] = useState("");
 
   const requestLoan = (nft: any) => {};
+
+  const storeWeb3FilesTest = async () => {
+    const text = "Sometimes, I Wish I Was A Cloud, Just Floating Along";
+    const apiKey = "13d44665.a912997a74e3434f8ce7a7ca7a2135f7";
+    const name = "shikamaru"; //Optional
+
+    const response = await lighthouse.uploadText(text, apiKey, name);
+
+    console.log(response);
+
+    setIpfsLink("https://gateway.lighthouse.storage/ipfs/" + response.data.Hash);
+  };
 
   const info = (nft: any) => {
     Modal.info({
@@ -95,6 +109,18 @@ const Home: NextPage = () => {
             <span className="block text-4xl font-bold">NectarFinance!</span>
           </h1>
           <p className="text-center">Connect your wallet to get started!</p>
+          <Button
+            onClick={() => {
+              storeWeb3FilesTest();
+            }}
+          >
+            Test Store
+          </Button>
+          {ipfsLink && (
+            <p>
+              Contract IPFS Link: <a href={ipfsLink}>{ipfsLink}</a>
+            </p>
+          )}
           {connectedAddress && (
             <div className="flex justify-center items-center space-x-2">
               <p className="my-2 font-medium">Connected Address:</p>

@@ -1,17 +1,18 @@
 import "@rainbow-me/rainbowkit/styles.css";
+import "~~/styles/globals.css";
+
 import { Metadata } from "next";
 import { ScaffoldEthAppWithProviders } from "~~/components/ScaffoldEthAppWithProviders";
 import { ThemeProvider } from "~~/components/ThemeProvider";
-import "~~/styles/globals.css";
 
 const baseUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : `http://localhost:${process.env.PORT || 3000}`;
 const imageUrl = `${baseUrl}/thumbnail.jpg`;
 
-const title = "Scaffold-ETH 2 App";
+const title = "NectarFinance";
 const titleTemplate = "%s | Scaffold-ETH 2";
-const description = "Built with 🏗 Scaffold-ETH 2";
+const description = "Use RWA as collateral for loans tokenized using NFTs and secured with ETHSign!";
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
