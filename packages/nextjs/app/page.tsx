@@ -1,9 +1,16 @@
 "use client";
 
-import { Button } from "antd";
-import type { NextPage } from "next";
-import { useAccount } from "wagmi";
+import { Button, Col, Modal, Row } from "antd";
+
 import { Address } from "~~/components/scaffold-eth";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import type { NextPage } from "next";
+import Typography from "@mui/material/Typography";
+import { useAccount } from "wagmi";
+import { useState } from "react";
 
 const baseURL = "https://eth-mainnet.g.alchemy.com/v2/374l9-eucheJf7r_lvnEZbEJ3dmtKRqn";
 
@@ -14,6 +21,40 @@ const requestOptions: RequestInit = {
 
 const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
+
+  const [nfts, setNfts] = useState([]);
+
+  const info = (nft: any) => {
+    Modal.info({
+      title: nft.title,
+      content: (
+        <div>
+          <p>
+            <b>Contract:</b> {nft.contract.address}
+          </p>
+          <p>
+            <b>Name:</b> {nft.contractMetadata.name} ({nft.contractMetadata.symbol})
+          </p>
+          <p>
+            <b>Token ID:</b> {nft.id.tokenId}
+          </p>
+          <p>
+            <b>Description:</b> {nft.description.slice(0, 100) || "No description"}
+          </p>
+          <p>
+            <b>Last Updated:</b> {nft.timeLastUpdated}
+          </p>
+          <p>
+            <a href={nft.tokenUri.gateway} target="_blank" rel="noopener noreferrer">
+              View on IPFS
+            </a>
+          </p>
+        </div>
+      ),
+      onOk() {},
+    });
+  };
+  const { Meta } = Card;
 
   return (
     <>
@@ -27,14 +68,19 @@ const Home: NextPage = () => {
           {connectedAddress && (
             <div className="flex justify-center items-center space-x-2">
               <p className="my-2 font-medium">Connected Address:</p>
+              <br />
               <Address address={connectedAddress} />
+              <br />
               <Button
                 onClick={() => {
                   const url = `${baseURL}/getNFTs/?owner=${connectedAddress}`;
 
                   fetch(url, requestOptions)
                     .then(response => response.json())
-                    .then(result => console.log(result))
+                    .then(result => {
+                      console.log(result);
+                      setNfts(result.ownedNfts);
+                    })
                     .catch(error => console.log("error", error));
                 }}
               >
@@ -42,6 +88,44 @@ const Home: NextPage = () => {
               </Button>
             </div>
           )}
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "16px", justifyContent: "center" }}>
+            {nfts.length > 0 &&
+              nfts.map((nft: any, index) => (
+                <>
+                  {/* <Card
+                  key={index}
+                    style={{ width: 200 }}
+                  >
+                    <img style={{ height: 200, objectFit: "cover", borderBottomRightRadius: "1em",borderBottomLeftRadius: "1em" }} alt="example" src={nft.media[0].gateway} />
+                    <Meta title={nft.title} description={nft.description.slice(0,50)} />
+                    <br />
+                    <Button onClick={() => info(nft)}>More Info</Button>
+                  </Card> */}
+                  <Card sx={{ width: 250, borderRadius: "1em" }} align="center">
+                    <CardMedia
+                      sx={{
+                        height: 250,
+                        objectFit: "cover",
+                        borderBottomRightRadius: "1em",
+                        borderBottomLeftRadius: "1em",
+                      }}
+                      image={nft.media[0].gateway}
+                      title="green iguana"
+                    />
+                    <CardContent >
+                      <Typography gutterBottom variant="h6" component="div">
+                        {nft.title}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {nft.description.slice(0, 50)}
+                      </Typography>
+                      <br />
+                      <Button onClick={() => info(nft)}>More Info</Button>
+                    </CardContent>
+                  </Card>
+                </>
+              ))}
+          </div>
         </div>
 
         {/* <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
