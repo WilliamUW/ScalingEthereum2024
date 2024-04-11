@@ -32,10 +32,18 @@ const Home: NextPage = () => {
 
   const requestLoan = (nft: any) => {};
 
-  const storeWeb3FilesTest = async () => {
-    const text = "Sometimes, I Wish I Was A Cloud, Just Floating Along";
+  const storeWeb3FilesTest = async (address: string, nft: any) => {
+    const currentTime = new Date().toISOString();
+    const text = `Borrower: ${address}
+    
+    NFT Collateral: ${nft.title} - ${nft.description}
+
+    Time: ${currentTime}
+    
+    Loan Amount: 100 USDC
+    `;
     const apiKey = "13d44665.a912997a74e3434f8ce7a7ca7a2135f7";
-    const name = "shikamaru"; //Optional
+    const name = `${currentTime} - Loan for ${address} with the NFT ${nft.title} as collateral.`; //Optional
 
     const response = await lighthouse.uploadText(text, apiKey, name);
 
@@ -109,18 +117,6 @@ const Home: NextPage = () => {
             <span className="block text-4xl font-bold">NectarFinance!</span>
           </h1>
           <p className="text-center">Connect your wallet to get started!</p>
-          <Button
-            onClick={() => {
-              storeWeb3FilesTest();
-            }}
-          >
-            Test Store
-          </Button>
-          {ipfsLink && (
-            <p>
-              Contract IPFS Link: <a href={ipfsLink}>{ipfsLink}</a>
-            </p>
-          )}
           {connectedAddress && (
             <div className="flex justify-center items-center space-x-2">
               <p className="my-2 font-medium">Connected Address:</p>
@@ -252,6 +248,7 @@ const Home: NextPage = () => {
               <Button
                 onClick={() => {
                   setStep(4);
+                  storeWeb3FilesTest(connectedAddress || "", selectedNft);
                 }}
               >
                 Contract Signed
@@ -268,6 +265,14 @@ const Home: NextPage = () => {
           {step === 4 && (
             <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
               <strong>Congrulations! The loan request process is complete.</strong>
+              {ipfsLink && (
+                <p>
+                  Contract IPFS Link:{" "}
+                  <a href={ipfsLink} target="_blank">
+                    {ipfsLink}
+                  </a>
+                </p>
+              )}
               <div>
                 <p>Contract Details ...</p>
                 <strong>Borrower:</strong> {connectedAddress}
