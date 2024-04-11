@@ -262,7 +262,8 @@ const Home: NextPage = () => {
               </Button>
             </div>
           )}
-          {step === 4 && (
+          {step === 4 && ipfsLink == "" && <div>Loading...</div>}
+          {step === 4 && ipfsLink && (
             <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
               <strong>Congrulations! The loan request process is complete.</strong>
               {ipfsLink && (
