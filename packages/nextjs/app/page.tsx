@@ -110,7 +110,7 @@ const Home: NextPage = () => {
   };
   return (
     <>
-      <div className="flex items-center flex-col flex-grow pt-10">
+      <div className="flex items-center flex-col flex-grow pt-10 text-center">
         <div className="px-5">
           <h1 className="text-center">
             <span className="block text-2xl mb-2">Welcome to</span>
@@ -118,11 +118,11 @@ const Home: NextPage = () => {
           </h1>
           <p className="text-center">Connect your wallet to get started!</p>
           {connectedAddress && (
-            <div className="flex justify-center items-center space-x-2">
-              <p className="my-2 font-medium">Connected Address:</p>
-              <br />
-              <Address address={connectedAddress} />
-              <br />
+            <div className="flex flex-col items-center space-y-2">
+              <div className="flex justify-center items-center space-x-2">
+                <p className="my-2 font-medium">Connected Address:</p>
+                <Address address={connectedAddress} />
+              </div>
               <Button
                 onClick={() => {
                   const url = `${baseURL}/getNFTs/?owner=${connectedAddress}`;
@@ -141,8 +141,13 @@ const Home: NextPage = () => {
               </Button>
             </div>
           )}
+          <br />
+          {nfts && nfts.length > 0 && step === 1 && <strong>Your NFTs:</strong>}
+          <br />
+          <br />
           <div style={{ display: "flex", flexWrap: "wrap", gap: "16px", justifyContent: "center" }}>
-            {nfts.length > 0 &&
+            {nfts &&
+              nfts.length > 0 &&
               step === 1 &&
               nfts.map((nft: any, index) => (
                 <>
