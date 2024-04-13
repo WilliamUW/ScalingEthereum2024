@@ -261,13 +261,9 @@ Loan Amount: 100 USDC
               <strong>Contract Finalization:</strong>
               <br />
               Please sign the following ETHSign contract to complete the loan request.
-              <div>
-                <p>Contract Details ...</p>
-                <strong>Borrower:</strong> {connectedAddress}
-                <strong>NFT Collateral</strong>
-                nftCard(selectedNft)
-                <p>Sign ...</p>
-              </div>
+              <br />
+              <br />
+
               <div>
                 <Button
                   onClick={() => {
@@ -287,6 +283,18 @@ Loan Amount: 100 USDC
                   Contract Signed
                 </Button>
               </div>
+              <div>
+                <p>Contract Details:</p>
+                <p style={{ whiteSpace: 'pre', textAlign: "left", maxWidth: "90vw" }}>{`
+  Borrower: ${connectedAddress}
+
+  Loan Amount: 100 USDC
+
+  Time: ${new Date().toISOString()}
+
+  NFT Collateral: ${JSON.stringify(selectedNft, null, 2)}
+`}</p>
+              </div>
             </div>
           )}
           {step === 4 && ipfsLink == "" && <div>Finalizing your contract, please wait...</div>}
@@ -301,12 +309,8 @@ Loan Amount: 100 USDC
                   </a>
                 </p>
               )}
-              <div>
-                <p>Contract Details ...</p>
-                <strong>Borrower:</strong> {connectedAddress}
-                <strong>NFT Collateral</strong> nftCard(selectedNft)
-                <p>Sign ...</p>
-              </div>
+              
+
               <div>
                 <Button
                   onClick={() => {
@@ -315,6 +319,18 @@ Loan Amount: 100 USDC
                 >
                   Done!
                 </Button>
+              </div>
+              <div>
+              <p>Contract Details:</p>
+                <p style={{ whiteSpace: 'pre', textAlign: "left", maxWidth: "90vw" }}>{`
+  Borrower: ${connectedAddress}
+
+  Loan Amount: 100 USDC
+
+  Time: ${new Date().toISOString()}
+
+  NFT Collateral: ${JSON.stringify(selectedNft, null, 2)}
+`}</p>
               </div>
             </div>
           )}
