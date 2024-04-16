@@ -1,6 +1,3 @@
-import * as dotenv from "dotenv";
-dotenv.config();
-import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-ethers";
 import "@nomicfoundation/hardhat-chai-matchers";
 import "@typechain/hardhat";
@@ -9,6 +6,12 @@ import "solidity-coverage";
 import "@nomicfoundation/hardhat-verify";
 import "hardhat-deploy";
 import "hardhat-deploy-ethers";
+
+import * as dotenv from "dotenv";
+
+import { HardhatUserConfig } from "hardhat/config";
+
+dotenv.config();
 
 // If not set, it uses ours Alchemy's default API key.
 // You can get your own at https://dashboard.alchemyapi.io
@@ -48,6 +51,10 @@ const config: HardhatUserConfig = {
     },
     mainnet: {
       url: `https://eth-mainnet.alchemyapi.io/v2/${providerApiKey}`,
+      accounts: [deployerPrivateKey],
+    },
+    morphTestnet: {
+      url: `https://rpc-testnet.morphl2.io`,
       accounts: [deployerPrivateKey],
     },
     sepolia: {
