@@ -8,10 +8,27 @@ export type ScaffoldConfig = {
   onlyLocalBurnerWallet: boolean;
   walletAutoConnect: boolean;
 };
-
+const morphTestnet: chains.Chain = {
+  id: 2710,
+  name: "Morph Testnet",
+  network: "Morph Testnet",
+  nativeCurrency: {
+    decimals: 18,
+    name: "Ethereum",
+    symbol: "ETH",
+  },
+  rpcUrls: {
+    default: {
+      http: ["https://rpc-testnet.morphl2.io"],
+    },
+    public: {
+      http: ["https://rpc-testnet.morphl2.io"],
+    },
+  },
+};
 const scaffoldConfig = {
   // The networks on which your DApp is live
-  targetNetworks: [chains.hardhat],
+  targetNetworks: [morphTestnet],
 
   // The interval at which your front-end polls the RPC servers for new data
   // it has no effect if you only target the local network (default is 4000)
