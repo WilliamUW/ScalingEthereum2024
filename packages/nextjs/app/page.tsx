@@ -1,6 +1,8 @@
 "use client";
 
-import { Button, Col, Modal, Row } from "antd";
+import { Button, Form, FormInstance, Input, InputNumber, Upload } from "antd";
+import { Col, Modal, Row } from "antd";
+import { RcFile, UploadProps } from "antd/lib/upload";
 
 import { Address } from "~~/components/scaffold-eth";
 import Card from "@mui/material/Card";
@@ -9,6 +11,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import type { NextPage } from "next";
 import Typography from "@mui/material/Typography";
+import { UploadOutlined } from "@ant-design/icons";
 import lighthouse from "@lighthouse-web3/sdk";
 import { useAccount } from "wagmi";
 import { useState } from "react";
@@ -22,6 +25,7 @@ const requestOptions: RequestInit = {
 
 const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
+  const [form] = Form.useForm();
 
   const [nfts, setNfts] = useState([]);
   const [selectedNft, setSelectedNft] = useState(null);
@@ -92,7 +96,7 @@ Loan Amount: 100 USDC
           borderBottomRightRadius: "1em",
           borderBottomLeftRadius: "1em",
         }}
-        image={nft.media[0].gateway}
+        image={nft.media[0].gateway || nft.media[0].thumbUrl}
         title="green iguana"
       />
       <CardContent>
@@ -107,6 +111,32 @@ Loan Amount: 100 USDC
         <Button onClick={() => setSelectedNft(nft)}>Request Loan</Button>
       </CardContent>
     </Card>;
+  };
+
+  const onFinish = (values: any) => {
+    console.log("Received values of form: ", values);
+    values.media[0].gateway = values.media[0].thumbUrl;
+    values.media[0].thumbUrl = "";
+    values.address = connectedAddress;
+
+    setSelectedNft(values);
+
+    setStep(2);
+  };
+
+  // Custom upload logic (mock)
+  const dummyRequest: UploadProps["customRequest"] = ({ file, onSuccess }) => {
+    setTimeout(() => {
+      onSuccess?.("ok", new XMLHttpRequest());
+    }, 0);
+  };
+
+  const normFile = (e: any): any => {
+    console.log("Upload event:", e);
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e && e.fileList;
   };
   return (
     <>
@@ -125,8 +155,68 @@ Loan Amount: 100 USDC
               </div>
             </div>
           )}
+
+          {step === 0 && connectedAddress && (
+            <div style={{ display: "flex", alignContent: "center" }}>
+              <Card sx={{ maxWidth: "700px", borderRadius: "1em", padding: "10px" }}>
+                <strong>Upload an image of your RWA Collateral:</strong>
+                <br />
+
+                <Form form={form} name="rwa_collateral" onFinish={onFinish} layout="vertical">
+                  <Form.Item
+                    name="title"
+                    label="Item Name"
+                    rules={[{ required: true, message: "Please input the name of the item!" }]}
+                  >
+                    <Input />
+                  </Form.Item>
+                  <Form.Item
+                    name="value"
+                    label="Item Value"
+                    rules={[{ required: true, message: "Please input the value of the item!" }]}
+                  >
+                    <InputNumber style={{ width: "100%" }} />
+                  </Form.Item>
+                  <Form.Item
+                    name="description"
+                    label="Item Description"
+                    rules={[{ required: true, message: "Please input a description of the item!" }]}
+                  >
+                    <Input.TextArea />
+                  </Form.Item>
+                  <Form.Item
+                    name="media"
+                    label="Item Image"
+                    valuePropName="fileList"
+                    getValueFromEvent={normFile}
+                    rules={[{ required: true, message: "Please upload an image of the item!" }]}
+                  >
+                    <Upload name="logo" listType="picture" customRequest={dummyRequest}>
+                      <Button icon={<UploadOutlined />}>Click to upload</Button>
+                    </Upload>
+                  </Form.Item>
+                  <Form.Item>
+                    <Button type="primary" htmlType="submit">
+                      Submit
+                    </Button>
+                  </Form.Item>
+                </Form>
+              </Card>
+            </div>
+          )}
+          {step === 1 && (
+            <div style={{ display: "flex", alignContent: "center" }}>
+              <br />
+              <strong>Or choose one of your existing NFTs:</strong>
+              <br />
+            </div>
+          )}
+          <br />
           {step === 0 && connectedAddress && (
             <div>
+              <br />
+              <strong>Or choose one of your existing NFTs:</strong>
+              <br />
               <br />
               <Button
                 onClick={() => {
@@ -147,13 +237,6 @@ Loan Amount: 100 USDC
             </div>
           )}
           <br />
-          {nfts && nfts.length > 0 && step === 1 && (
-            <div>
-              <strong>Your NFTs:</strong>
-              <br />
-              <br />
-            </div>
-          )}
           <div style={{ display: "flex", flexWrap: "wrap", gap: "16px", justifyContent: "center" }}>
             {nfts &&
               nfts.length > 0 &&
@@ -164,7 +247,7 @@ Loan Amount: 100 USDC
                   key={index}
                     style={{ width: 200 }}
                   >
-                    <img style={{ height: 200, objectFit: "cover", borderBottomRightRadius: "1em",borderBottomLeftRadius: "1em" }} alt="example" src={nft.media[0].gateway} />
+                    <img style={{ height: 200, objectFit: "cover", borderBottomRightRadius: "1em",borderBottomLeftRadius: "1em" }} alt="example" src={nft.media[0].gateway || nft.media[0].thumbUrl} />
                     <Meta title={nft.title} description={nft.description.slice(0,50)} />
                     <br />
                     <Button onClick={() => info(nft)}>More Info</Button>
@@ -177,7 +260,7 @@ Loan Amount: 100 USDC
                         borderBottomRightRadius: "1em",
                         borderBottomLeftRadius: "1em",
                       }}
-                      image={nft.media[0].gateway}
+                      image={nft.media[0].gateway || nft.media[0].thumbUrl}
                       title="green iguana"
                     />
                     <CardContent>
@@ -220,7 +303,7 @@ Loan Amount: 100 USDC
                         borderBottomRightRadius: "1em",
                         borderBottomLeftRadius: "1em",
                       }}
-                      image={nft.media[0].gateway}
+                      image={nft.media[0].gateway || nft.media[0].thumbUrl}
                       title="green iguana"
                     />
                     <CardContent>
@@ -263,7 +346,6 @@ Loan Amount: 100 USDC
               Please sign the following ETHSign contract to complete the loan request.
               <br />
               <br />
-
               <div>
                 <Button
                   onClick={() => {
@@ -285,7 +367,7 @@ Loan Amount: 100 USDC
               </div>
               <div>
                 <p>Contract Details:</p>
-                <p style={{ whiteSpace: 'pre', textAlign: "left", maxWidth: "90vw" }}>{`
+                <p style={{ whiteSpace: "pre", textAlign: "left", maxWidth: "90vw" }}>{`
   Borrower: ${connectedAddress}
 
   Loan Amount: 100 USDC
@@ -309,20 +391,19 @@ Loan Amount: 100 USDC
                   </a>
                 </p>
               )}
-              
 
               <div>
                 <Button
                   onClick={() => {
-                    setStep(1);
+                    setStep(0);
                   }}
                 >
                   Done!
                 </Button>
               </div>
               <div>
-              <p>Contract Details:</p>
-                <p style={{ whiteSpace: 'pre', textAlign: "left", maxWidth: "90vw" }}>{`
+                <p>Contract Details:</p>
+                <p style={{ whiteSpace: "pre", textAlign: "left", maxWidth: "90vw" }}>{`
   Borrower: ${connectedAddress}
 
   Loan Amount: 100 USDC
