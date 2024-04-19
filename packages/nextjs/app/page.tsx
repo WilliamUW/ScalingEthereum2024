@@ -172,7 +172,7 @@ Loan Amount: 100 USDC
                   </Form.Item>
                   <Form.Item
                     name="value"
-                    label="Item Value"
+                    label="Item Value (USD $)"
                     rules={[{ required: true, message: "Please input the value of the item!" }]}
                   >
                     <InputNumber style={{ width: "100%" }} />
