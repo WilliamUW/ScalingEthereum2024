@@ -1,3 +1,4 @@
+import { defineChain } from "viem";
 import * as chains from "viem/chains";
 
 export type ScaffoldConfig = {
@@ -8,6 +9,30 @@ export type ScaffoldConfig = {
   onlyLocalBurnerWallet: boolean;
   walletAutoConnect: boolean;
 };
+
+export const morphTestnet = defineChain({
+  id: 2710,
+  name: "Morph Testnet",
+  nativeCurrency: {
+    decimals: 18,
+    name: "Ether",
+    symbol: "ETH",
+  },
+  rpcUrls: {
+    default: {
+      http: ["https://rpc-testnet.morphl2.io"],
+      webSocket: ["wss://rpc-testnet.morphl2.io"],
+    },
+    public: {
+      http: ["https://rpc-testnet.morphl2.io"],
+      webSocket: ["wss://rpc-testnet.morphl2.io"],
+    },
+  },
+  blockExplorers: {
+    default: { name: "Explorer", url: "https://explorer-testnet.morphl2.io/" },
+  },
+  network: "Morph Testnet",
+});
 
 const scaffoldConfig = {
   // The networks on which your DApp is live
