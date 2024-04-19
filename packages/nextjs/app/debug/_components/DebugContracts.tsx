@@ -42,7 +42,7 @@ export function DebugContracts() {
                   key={String(contractName)}
                   onClick={() => setSelectedContract(contractName)}
                 >
-                  {String(contractName)} // Convert contractName to string
+                  {String(contractName)}
                   {contractsData[String(contractName)].external && (
                     <span className="tooltip tooltip-top tooltip-accent" data-tip="External contract">
                       <BarsArrowUpIcon className="h-4 w-4 cursor-pointer" />
