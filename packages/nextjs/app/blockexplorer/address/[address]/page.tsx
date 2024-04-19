@@ -1,9 +1,9 @@
-import fs from "fs";
-import path from "path";
-import { hardhat } from "viem/chains";
 import { AddressComponent } from "~~/app/blockexplorer/_components/AddressComponent";
-import deployedContracts from "~~/contracts/deployedContracts";
 import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
+import deployedContracts from "~~/contracts/deployedContracts";
+import fs from "fs";
+import { hardhat } from "viem/chains";
+import path from "path";
 
 type PageProps = {
   params: { address: string };
@@ -61,7 +61,7 @@ const getContractData = async (address: string) => {
   const deployedContractsOnChain = contracts ? contracts[chainId] : {};
   for (const [contractName, contractInfo] of Object.entries(deployedContractsOnChain)) {
     if (contractInfo.address.toLowerCase() === address.toLowerCase()) {
-      contractPath = `contracts/${contractName}.sol`;
+      contractPath = `contracts/${String(contractName)}.sol`;
       break;
     }
   }

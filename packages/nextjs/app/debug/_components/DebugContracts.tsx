@@ -55,7 +55,7 @@ export function DebugContracts() {
           {contractNames.map(contractName => (
             <ContractUI
               key={String(contractName)}
-              contractName={contractName}
+              contractName={String(contractName)}
               className={contractName === selectedContract ? "" : "hidden"}
             />
           ))}
