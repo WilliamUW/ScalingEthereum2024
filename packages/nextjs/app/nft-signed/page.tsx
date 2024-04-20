@@ -1,16 +1,10 @@
 "use client";
 
 import { AddressInput, IntegerInput } from "~~/components/scaffold-eth";
-import { getTokenPrice, multiplyTo1e18 } from "~~/utils/scaffold-eth/priceInWei";
-import {
-  useDeployedContractInfo,
-  useScaffoldContractRead,
-  useScaffoldContractWrite,
-} from "~~/hooks/scaffold-eth";
 
 import type { NextPage } from "next";
-import { formatEther } from "viem";
 import { useAccount } from "wagmi";
+import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 import { useState } from "react";
 
 const SignedAgreement: NextPage = () => {
@@ -64,7 +58,11 @@ const SignedAgreement: NextPage = () => {
       <div>
         <h2 className="text-xl">Lock / Release Collateral</h2>
         <AddressInput value={nftAddress} onChange={setNftAddress} placeholder="NFT Address" />
-        <IntegerInput value={tokenId} onChange={setTokenId} placeholder="Token ID" />
+        <IntegerInput
+          value={tokenId}
+          onChange={(newValue: string | bigint) => setTokenId(newValue.toString())}
+          placeholder="Token ID"
+        />
         <button className="btn btn-primary" onClick={() => lockCollateral()}>
           Lock Collateral
         </button>
@@ -73,21 +71,11 @@ const SignedAgreement: NextPage = () => {
         </button>
       </div>
 
-      <div>
-        <h2 className="text-xl">Update Loan Conditions</h2>
-        <IntegerInput value={loanAmount} onChange={setLoanAmount} placeholder="Loan Amount (wei)" />
-        <IntegerInput value={interestRate} onChange={setInterestRate} placeholder="Interest Rate (basis points)" />
-        <IntegerInput value={loanDuration} onChange={setLoanDuration} placeholder="Loan Duration (seconds)" />
-        <button className="btn btn-primary" onClick={() => updateLoanAmount()}>
-          Update Loan Amount
-        </button>
-        <button className="btn btn-primary" onClick={() => updateInterestRate()}>
-          Update Interest Rate
-        </button>
-        <button className="btn btn-primary" onClick={() => updateLoanDuration()}>
-          Update Loan Duration
-        </button>
-      </div>
+      <IntegerInput
+        value={loanAmount}
+        onChange={(newValue: string | bigint) => setLoanAmount(newValue.toString())}
+        placeholder="Loan Amount (wei)"
+      />
     </div>
   );
 };
