@@ -1,20 +1,17 @@
 "use client";
 
-import { useState } from "react";
-import type { NextPage } from "next";
-import { formatEther } from "viem";
-import { useAccount } from "wagmi";
 import { AddressInput, IntegerInput } from "~~/components/scaffold-eth";
+import { getTokenPrice, multiplyTo1e18 } from "~~/utils/scaffold-eth/priceInWei";
 import {
-  useAccountBalance,
   useDeployedContractInfo,
   useScaffoldContractRead,
   useScaffoldContractWrite,
 } from "~~/hooks/scaffold-eth";
 
-import { getTokenPrice, multiplyTo1e18 } from "~~/utils/scaffold-eth/priceInWei";
-
-
+import type { NextPage } from "next";
+import { formatEther } from "viem";
+import { useAccount } from "wagmi";
+import { useState } from "react";
 
 const SignedAgreement: NextPage = () => {
   const { address } = useAccount();
