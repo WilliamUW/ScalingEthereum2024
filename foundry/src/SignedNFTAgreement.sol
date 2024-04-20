@@ -81,4 +81,20 @@ contract SignedNFTAgreement is ERC721Holder, ReentrancyGuard, Ownable {
 
         emit CollateralReleased(nftAddress, tokenId);
     }
+
+
+    // Generate Signature 
+
+
+
+    // Verify Signature 
+    // 
+
+
+
+
+
+
+
+
 }
