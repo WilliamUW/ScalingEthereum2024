@@ -9,7 +9,7 @@ libs = ["lib"]
 #
 #[etherscan]
 #arbitrum = { key = "${ARBITRUM_ETHERSCAN_API_KEY}", url = "" }
-#morphTestnet = { key = "${MORPH_API_KEY}", url = "https://explorer-api-testnet.morphl2.io/api }
+#morphTestnet = { key = "${MORPH_ETHERSCAN_API_KEY}", url = "https://explorer-api-testnet.morphl2.io/api }
 
 [doc]
 title = 'NectarFinance contracts'

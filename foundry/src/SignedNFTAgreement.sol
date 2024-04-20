@@ -7,6 +7,10 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract SignedNFTAgreement is ERC721Holder, ReentrancyGuard, Ownable {
+    // Parties details 
+    address payable sender; 
+    address payable buyer; 
+    
     // NFT collateral details
     address public nftAddress;
     uint256 public tokenId;
@@ -54,11 +58,12 @@ contract SignedNFTAgreement is ERC721Holder, ReentrancyGuard, Ownable {
     }
 
     // Function to lock collateral
-    function lockCollateral() external nonReentrant onlyOwner {
-        require(!isLocked, "NFT is already locked as collateral");
-
-        IERC721 nft = IERC721(nftAddress);
-        require(nft.ownerOf(tokenId) == owner(), "Contract owner does not own the NFT");
+    ///@param nftAddress - the address of the NFT
+    ///@param _tokenId - the tokenId of the NFT
+    function lockCollateral(address nftAddress, uint256 _tokenId) external nonReentrant onlyOwner {  //@audit - 
+        require(!isLocked, "NFT is already locked as collateral"); //@audit - NFT should not be used as collateral 
+        IERC721 nft = IERC721(nftAddress); 
+        require(nft.ownerOf(_tokenId) == owner(), "Contract owner does not own the NFT"); 
 
         nft.safeTransferFrom(owner(), address(this), tokenId);
         isLocked = true;
