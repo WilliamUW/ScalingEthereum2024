@@ -5,26 +5,36 @@
 import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
 const deployedContracts = {
-  31337: {
-    InvoiceEscrow: {
-      address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+  2710: {
+    SignedNFTAgreement: {
+      address: "0x47c05BCCA7d57c87083EB4e586007530eE4539e9",
       abi: [
         {
           inputs: [
             {
               internalType: "address",
-              name: "_seller",
+              name: "newOwner",
               type: "address",
             },
             {
-              internalType: "address",
-              name: "_buyer",
-              type: "address",
+              internalType: "uint256",
+              name: "_loanAmount",
+              type: "uint256",
             },
             {
-              internalType: "address",
-              name: "_tokenAddress",
-              type: "address",
+              internalType: "uint256",
+              name: "_interestRate",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_loanDuration",
+              type: "uint256",
+            },
+            {
+              internalType: "string",
+              name: "_rwaCollateralAgreementHash",
+              type: "string",
             },
           ],
           stateMutability: "nonpayable",
@@ -35,18 +45,18 @@ const deployedContracts = {
           inputs: [
             {
               indexed: true,
-              internalType: "uint256",
-              name: "invoiceId",
-              type: "uint256",
+              internalType: "address",
+              name: "nftAddress",
+              type: "address",
             },
             {
-              indexed: false,
+              indexed: true,
               internalType: "uint256",
-              name: "amount",
+              name: "tokenId",
               type: "uint256",
             },
           ],
-          name: "InvoiceCreated",
+          name: "CollateralLocked",
           type: "event",
         },
         {
@@ -54,12 +64,18 @@ const deployedContracts = {
           inputs: [
             {
               indexed: true,
+              internalType: "address",
+              name: "nftAddress",
+              type: "address",
+            },
+            {
+              indexed: true,
               internalType: "uint256",
-              name: "invoiceId",
+              name: "tokenId",
               type: "uint256",
             },
           ],
-          name: "InvoiceSigned",
+          name: "CollateralReleased",
           type: "event",
         },
         {
@@ -67,23 +83,106 @@ const deployedContracts = {
           inputs: [
             {
               indexed: true,
-              internalType: "uint256",
-              name: "invoiceId",
-              type: "uint256",
+              internalType: "address",
+              name: "previousOwner",
+              type: "address",
             },
             {
-              indexed: false,
-              internalType: "uint256",
-              name: "amount",
-              type: "uint256",
+              indexed: true,
+              internalType: "address",
+              name: "newOwner",
+              type: "address",
             },
           ],
-          name: "PaymentMade",
+          name: "OwnershipTransferred",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "string",
+              name: "agreementHash",
+              type: "string",
+            },
+          ],
+          name: "RWACollateralAgreementAdded",
           type: "event",
         },
         {
           inputs: [],
-          name: "buyer",
+          name: "interestRate",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "isLocked",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "loanAmount",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "loanDuration",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "nftAddress",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "_tokenId",
+              type: "uint256",
+            },
+          ],
+          name: "lockCollateral",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "nftAddress",
           outputs: [
             {
               internalType: "address",
@@ -97,66 +196,40 @@ const deployedContracts = {
         {
           inputs: [
             {
-              internalType: "uint256",
-              name: "invoiceId",
-              type: "uint256",
+              internalType: "address",
+              name: "",
+              type: "address",
             },
             {
-              internalType: "uint256",
-              name: "amount",
-              type: "uint256",
+              internalType: "address",
+              name: "",
+              type: "address",
             },
-          ],
-          name: "createInvoice",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
             {
               internalType: "uint256",
               name: "",
               type: "uint256",
             },
+            {
+              internalType: "bytes",
+              name: "",
+              type: "bytes",
+            },
           ],
-          name: "invoices",
+          name: "onERC721Received",
           outputs: [
             {
-              internalType: "uint256",
-              name: "amount",
-              type: "uint256",
-            },
-            {
-              internalType: "bool",
-              name: "signed",
-              type: "bool",
-            },
-            {
-              internalType: "bool",
-              name: "paid",
-              type: "bool",
+              internalType: "bytes4",
+              name: "",
+              type: "bytes4",
             },
           ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "invoiceId",
-              type: "uint256",
-            },
-          ],
-          name: "payInvoice",
-          outputs: [],
           stateMutability: "nonpayable",
           type: "function",
         },
         {
           inputs: [],
-          name: "seller",
+          name: "owner",
           outputs: [
             {
               internalType: "address",
@@ -168,33 +241,105 @@ const deployedContracts = {
           type: "function",
         },
         {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "invoiceId",
-              type: "uint256",
-            },
-          ],
-          name: "signInvoice",
+          inputs: [],
+          name: "releaseCollateral",
           outputs: [],
           stateMutability: "nonpayable",
           type: "function",
         },
         {
           inputs: [],
-          name: "token",
+          name: "renounceOwnership",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "rwaCollateralAgreementHash",
           outputs: [
             {
-              internalType: "contract IERC20",
+              internalType: "string",
               name: "",
-              type: "address",
+              type: "string",
             },
           ],
           stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "tokenId",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "newOwner",
+              type: "address",
+            },
+          ],
+          name: "transferOwnership",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_interestRate",
+              type: "uint256",
+            },
+          ],
+          name: "updateInterestRate",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_loanAmount",
+              type: "uint256",
+            },
+          ],
+          name: "updateLoanAmount",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_loanDuration",
+              type: "uint256",
+            },
+          ],
+          name: "updateLoanDuration",
+          outputs: [],
+          stateMutability: "nonpayable",
           type: "function",
         },
       ],
-      inheritedFunctions: {},
+      inheritedFunctions: {
+        onERC721Received:
+          "@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.sol",
+        owner: "@openzeppelin/contracts/access/Ownable.sol",
+        renounceOwnership: "@openzeppelin/contracts/access/Ownable.sol",
+        transferOwnership: "@openzeppelin/contracts/access/Ownable.sol",
+      },
     },
   },
 } as const;
