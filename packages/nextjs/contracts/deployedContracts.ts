@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   2710: {
     SignedNFTAgreement: {
-      address: "0x47c05BCCA7d57c87083EB4e586007530eE4539e9",
+      address: "0x2D7D2B5fb66D414aD5dac757361139f230A92D4c",
       abi: [
         {
           inputs: [

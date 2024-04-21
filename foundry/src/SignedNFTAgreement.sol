@@ -6,8 +6,13 @@ import "@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+
+/// @title SignedNFTAgreement 
+/// @author Mehdi R. 
+/// @notice Receives NFTs as collateral for a loan and releases them when the loan is repaid 
+/// @dev The contract allows to deposit RWA collateral agreement signed via ETHSign
 contract SignedNFTAgreement is ERC721Holder, ReentrancyGuard, Ownable {
-    // Parties details 
+    // Parties invovled details 
     address payable sender; 
     address payable buyer; 
     
@@ -30,16 +35,17 @@ contract SignedNFTAgreement is ERC721Holder, ReentrancyGuard, Ownable {
     event RWACollateralAgreementAdded(string agreementHash);
 
     constructor(
-        address _initialOwner,
+        address newOwner,
         uint256 _loanAmount,
         uint256 _interestRate,
         uint256 _loanDuration,
         string memory _rwaCollateralAgreementHash
-    )  Ownable(_initialOwner) {
+    )  Ownable(newOwner) {
         loanAmount = _loanAmount;
         interestRate = _interestRate;
         loanDuration = _loanDuration;
         rwaCollateralAgreementHash = _rwaCollateralAgreementHash;
+        transferOwnership(newOwner);
     }
 
     // Function to udpdate loan amout 
@@ -81,20 +87,4 @@ contract SignedNFTAgreement is ERC721Holder, ReentrancyGuard, Ownable {
 
         emit CollateralReleased(nftAddress, tokenId);
     }
-
-
-    // Generate Signature 
-
-
-
-    // Verify Signature 
-    // 
-
-
-
-
-
-
-
-
 }
