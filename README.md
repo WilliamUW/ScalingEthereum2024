@@ -44,7 +44,7 @@ We have contributed to Powerloom repositories by forking 2 repos and making 2 pu
 - **Pull Requests**:
 
 - [Snapshotter Configs PR #3](https://github.com/PowerLoom/snapshotter-configs/pull/3): Introduces new configuration entries for Nectar Finance's NFT loan and collateral monitoring services.
-- [Snapshotter Computes PR #9]([https://github.com/PowerLoom/snapshotter-computes/pull/9]): Adds compute modules designed to track and process data concerning NFT loans and the status of NFTs as collateral.
+- [Snapshotter Computes PR #9]([https://github.com/PowerLoom/snapshotter-computes/pull/9]): Adds compute modules designed to track and process data concerning NFT loans and the status of NFTs as a collateral. 
 
 Nectar Finance utilizes Powerloom technology to ensure accurate and decentralized verification of RWA data in real-time. This integration plays a critical role in enhancing the platform's ability to manage and verify collateral effectively.
 
