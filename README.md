@@ -32,7 +32,7 @@ At Nectar Finance, our commitment to innovation is deeply ingrained, enhancing o
 
 ## Integration with Morph 
 
-![Morph Tesnet](./docs/Morph.png)
+![Morph Tesnet](./docs/morph.png)
 
 Contracts are deployed on Morph Tesnet and verified. 
 
