@@ -29,6 +29,21 @@ At Nectar Finance, our commitment to innovation is deeply ingrained, enhancing o
 - **Integration with Powerloom**: Building sophisticated front-end solutions that efficiently manage real-time data.
 - **Enhancing Security with ETHSign**: Revolutionizing agreement signing and verification, improving accessibility and security for all transactions.
 
+
+## Integration with Morph 
+
+![Morph Tesnet](./docs/Morph.png)
+
+Contracts are deployed on Morph Tesnet and verified. 
+
+Here is the contract : [NFTSignedAgreement](https://explorer-testnet.morphl2.io/address/0x2D7D2B5fb66D414aD5dac757361139f230A92D4c?tab=contract)
+
+#### Feedback for Morph : (Integration with Scaffold ETH - hardhat) : 
+
+- Hardhat config : [Here](https://github.com/WilliamUW/ScalingEthereum2024/blob/master/packages/hardhat/hardhat.config.ts)
+- Scaffold config : [Here](https://github.com/WilliamUW/ScalingEthereum2024/blob/master/packages/nextjs/scaffold.config.ts)
+
+
 ## Architecture and Integration with Powerloom
 
 Below is an overview of the Nectar Finance system architecture, illustrating how different components interact within our platform:
@@ -59,7 +74,7 @@ Nectar Finance utilizes Powerloom technology to ensure accurate and decentralize
 
 ### Attestation of Real-World Assets
 
-We generate digital attestations for RWAs using ETHSign, providing proof of ownership essential for collateral validation. This process enhances transparency and security, ensuring all parties are protected and risks are minimized.
+We generate digital attestations for RWAs using EthSign, providing proof of ownership essential for collateral validation. This process enhances transparency and security, ensuring all parties are protected and risks are minimized.
 
 ## Getting Started
 
