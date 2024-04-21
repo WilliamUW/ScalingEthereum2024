@@ -26,7 +26,7 @@ const config: HardhatUserConfig = {
       },
     },
   },
-  defaultNetwork: "hardhat",
+  defaultNetwork: "morphTestnet",
   namedAccounts: {
     deployer: { default: 0 },
   },
